@@ -16,10 +16,10 @@ const checkCarId = (req, res, next) => {
 };
 
 const carSchema = yup.object({
-  vin: yup.string().required({ status: 400, message: 'Car VIN number is missing' }),
-  make: yup.string().required({ status: 400, message: 'Car make is missing' }),
-  model: yup.string().required({ status: 400, message: 'Car model is missing' }),
-  mileage: yup.number().required({ status: 400, message: 'Car mileage is missing' }),
+  vin: yup.string().required('vin is missing'),
+  make: yup.string().required('make is missing'),
+  model: yup.string().required('model is missing'),
+  mileage: yup.number().required('mileage is missing'),
   title: yup.string(),
   transmission: yup.string()
 });
@@ -30,7 +30,7 @@ const checkCarPayload = async (req, res, next) => {
     const newCar = await carSchema.validate(req.body);
     next();
   } catch(err) {
-    next(err);
+    next({ status: 400, message: err.message });
   }
 };
 
